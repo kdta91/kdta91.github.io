@@ -3,225 +3,440 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
     <title>Kristoff Ampong - Full Stack Developer</title>
-
-    <link rel="icon" href="./img/favicon/favicon.ico" type="image/png" />
-    <link rel="stylesheet" href="./css/app.css" />
+    <meta
+      name="description"
+      content="Results-driven Full Stack Developer with 10+ years of experience architecting and delivering optimal web solutions."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <a class="menu-toggle"><i class="fas fa-bars"></i></a>
+    <!-- Navigation -->
+    <nav id="navigation" class="nav">
+      <div class="nav-container">
+        <div class="nav-content">
+          <a href="#" class="nav-logo">KA</a>
 
-      <nav>
-        <ul class="menu-list">
-          <li>
-            <a data-page="home" class="menu-item" href="#">Home</a>
-          </li>
-          <li>
-            <a data-page="about" class="menu-item" href="#about">About</a>
-          </li>
-          <li>
-            <a data-page="experience" class="menu-item" href="#experience"
-              >Experience</a
-            >
-          </li>
-          <li>
-            <a data-page="technologies" class="menu-item" href="#technologies"
-              >Technologies</a
-            >
-          </li>
-
-          <li>
-            <a data-page="education" class="menu-item" href="#education"
-              >Education</a
-            >
-          </li>
-          <li>
-            <a data-page="contact" class="menu-item" href="#contact">Contact</a>
-          </li>
-          <li>
-            <a
-              class="menu-item"
-              href="./Resume-Kristoff_Ampong.pdf"
-              download="Resume-Kristoff_Ampong"
-              >Download Resume (PDF)
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <section id="home">
-      <h1>Kristoff Ampong</h1>
-
-      <hr />
-
-      <h2>Full Stack Developer</h2>
-    </section>
-
-    <section id="about">
-      <img src="./img/me.jpg" alt="My profile picture" />
-
-      <div>
-        <p>
-          I'm a solution-driven, self-motivated developer with a decade of
-          experience in web development. I excel at interpreting client
-          requirements and delivering optimal solutions, with a keen eye for
-          detail and strong communication skills. I've successfully mentored
-          junior team members, fostering their growth and technical knowledge.
-          My passion lies in web technologies, and I'm always eager to embrace
-          new challenges and learning opportunities.
-        </p>
-      </div>
-    </section>
-
-    <section id="experience">
-      <div class="content text-center">
-        <h2>Experience</h2>
-      </div>
-
-      <div class="content">
-        <div class="details">
-          <h3>Senior Full Stack Developer <br /><small>MAVR LAB</small></h3>
-
-          <div class="duration">
-            <p>August 2016 - present<span class="right">Remote</span></p>
+          <div class="nav-links">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#education" class="nav-link">Education</a>
+            <a href="#contact" class="nav-link">Contact</a>
           </div>
 
-          <ul>
-            <li>
-              Designed, executed, and deployed application architecture
-              utilizing AWS services, including AWS EC2, AWS Lightsail, AWS
-              Amplify, AWS S3, and MongoDB Atlas on the AWS platform.
-            </li>
-            <li>
-              Created and sustained websites using WordPress and developed web
-              applications with JavaScript frameworks such as ReactJS, NextJS,
-              and AngularJS.
-            </li>
-            <li>
-              Constructed APIs using NodeJS, MongoDB, Firebase, and Firestore.
-            </li>
-            <li>
-              Proficiently administered web hosting via cPanel and SiteGround.
-            </li>
-            <li>
-              Directed and oversaw the development of websites and web
-              applications, assuming a leadership role in project management.
-            </li>
-          </ul>
-        </div>
-
-        <div class="details">
-          <h3>Web Developer <br /><small>Grassroots.org</small></h3>
-
-          <div class="duration">
-            <p>March 2014 - April 2016<span class="right">Remote</span></p>
-          </div>
-
-          <ul>
-            <li>Created websites using WordPress and Ruby on Rails.</li>
-            <li>
-              Engineered a bespoke plugin for rendering an SVG map directory.
-            </li>
-            <li>
-              Designed a mobile directory application featuring a comprehensive
-              database of homeless and recovery shelters organized by US states,
-              employing Apache Cordova.
-            </li>
-            <li>
-              Crafted tailored cURL scripts to facilitate operations such as
-              data scraping and database inquiries.
-            </li>
-          </ul>
-        </div>
-
-        <div class="details">
-          <h3>PHP Developer <br /><small>Lancera</small></h3>
-
-          <div class="duration">
-            <p>
-              June 2012 - June 2013<span class="right"
-                >Dumaguete, Philippines</span
+          <div class="mobile-menu-button">
+            <button id="mobileMenuToggle" class="mobile-toggle">
+              <svg
+                class="hamburger-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+              <svg
+                class="close-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="display: none"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobileMenu" class="mobile-menu">
+          <div class="mobile-menu-content">
+            <button class="mobile-nav-link" data-href="#about">About</button>
+            <button class="mobile-nav-link" data-href="#experience">
+              Experience
+            </button>
+            <button class="mobile-nav-link" data-href="#skills">Skills</button>
+            <button class="mobile-nav-link" data-href="#education">
+              Education
+            </button>
+            <button class="mobile-nav-link" data-href="#contact">
+              Contact
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="profile-image-container">
+            <img
+              src="images/profile.jpg"
+              alt="Kristoff Ampong - Full Stack Developer"
+              class="profile-image"
+            />
+            <div class="profile-overlay"></div>
+          </div>
+          <h1 class="hero-title">Kristoff Ampong</h1>
+          <p class="hero-subtitle">Full Stack Developer</p>
+
+          <div class="hero-description">
+            <p>
+              Results-driven Full Stack Developer with 10+ years of experience
+              architecting and delivering optimal web solutions. Passionate
+              about leveraging cutting-edge web technologies to solve complex
+              challenges and drive innovation.
             </p>
           </div>
 
-          <ul>
-            <li>
-              Entry-level developer responsible for backend development using
-              PHP and frameworks like CakePHP and CodeIgniter, along with MySQL
-              database management
-            </li>
-          </ul>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn-primary">Get In Touch</a>
+            <a href="#experience" class="btn-secondary">View Work</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="technologies">
-      <div class="text-center">
-        <h2>Technologies</h2>
-      </div>
+      <!-- About Section -->
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section-divider"></div>
 
-      <div class="skill-wrapper">
-        <span class="skill">HTML</span>
-        <span class="skill">CSS</span>
-        <span class="skill">JavaScript</span>
-        <span class="skill">jQuery</span>
-        <span class="skill">React</span>
-        <span class="skill">Next.js</span>
-        <span class="skill">Node.js</span>
-        <span class="skill">PHP</span>
-        <span class="skill">WordPress</span>
-        <span class="skill">MySQL</span>
-        <span class="skill">MongoDB</span>
-        <span class="skill">AWS</span>
-        <span class="skill">Firebase</span>
-        <span class="skill">Docker</span>
-        <span class="skill">REST API</span>
-      </div>
-    </section>
+          <div class="about-grid">
+            <div class="about-text">
+              <h2 class="section-title">About Me</h2>
+              <div class="about-content">
+                <p>
+                  With over a decade of experience in full-stack development, I
+                  specialize in creating scalable web applications and
+                  innovative solutions that drive business growth.
+                </p>
+                <p>
+                  My expertise spans from frontend technologies like React and
+                  Next.js to backend systems using Node.js and cloud
+                  infrastructure on AWS. I'm passionate about mentoring junior
+                  developers and staying at the forefront of web technology.
+                </p>
+                <p>
+                  Based in the Philippines, I work remotely with teams
+                  worldwide, bringing technical excellence and creative
+                  problem-solving to every project.
+                </p>
+              </div>
+            </div>
 
-    <section id="education">
-      <h2>Education</h2>
+            <div class="contact-info-card">
+              <h3>Contact Information</h3>
+              <div class="contact-info">
+                <div class="contact-item">
+                  <span class="contact-icon">📧</span>
+                  <span>kristoff_ampong@live.com</span>
+                </div>
+                <div class="contact-item">
+                  <span class="contact-icon">📱</span>
+                  <span>+63 9258263405</span>
+                </div>
+                <div class="contact-item">
+                  <span class="contact-icon">📍</span>
+                  <span>Bacong, Philippines</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div>
-        <h3>Bachelor of Science in Information Technology</h3>
-        <h3>Silliman University</h3>
-        <p>Dumaguete, Philippines</p>
-        <small>2007 - 2012</small>
-      </div>
-    </section>
+      <!-- Experience Section -->
+      <section id="experience" class="section">
+        <div class="container">
+          <div class="section-divider"></div>
+          <h2 class="section-title centered">Work Experience</h2>
 
-    <section id="contact">
-      <h2>Contact</h2>
+          <div class="experience-list">
+            <div class="experience-item">
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-title">Full Stack Developer</h3>
+                  <p class="experience-company">MAVR Lab</p>
+                </div>
+                <div class="experience-meta">
+                  <p class="experience-period">08/2016 - Present</p>
+                  <p class="experience-location">Remote</p>
+                </div>
+              </div>
+              <div class="experience-achievements">
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Developed RAG chatbot using OpenAI and Gemini APIs for
+                    recruitment and lead generation
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Architected, built, and deployed scalable applications on
+                    AWS (EC2, Lightsail, Amplify, S3)
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Developed and maintained WordPress sites and dynamic web
+                    applications with React, Next.js, and AngularJS
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Built RESTful APIs using Node.js, MongoDB, Firebase, and
+                    Firestore
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Managed web hosting (cPanel, SiteGround), ensuring high
+                    availability and optimal performance
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Led full-cycle development of websites and web applications,
+                    including project management
+                  </p>
+                </div>
+              </div>
+            </div>
 
-      <div>
-        <span
-          ><a href="https://www.linkedin.com/in/kris-ampong/" target="_blank"
-            ><i class="fab fa-linkedin"></i></a
-        ></span>
-        <span
-          ><a href="https://github.com/kdta91" target="_blank"
-            ><i class="fab fa-github"></i></a
-        ></span>
-        <span
-          ><a href="skype:kdta91"><i class="fab fa-skype"></i></a
-        ></span>
-        <span
-          ><a href="mailto:kristoff_ampong@live.com"
-            ><i class="fas fa-envelope"></i
-          ></a>
-        </span>
-      </div>
-    </section>
+            <div class="experience-item">
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-title">Web Developer</h3>
+                  <p class="experience-company">Grassroots.org</p>
+                </div>
+                <div class="experience-meta">
+                  <p class="experience-period">03/2014 - 04/2016</p>
+                  <p class="experience-location">Remote</p>
+                </div>
+              </div>
+              <div class="experience-achievements">
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Developed and maintained WordPress sites and Ruby on Rails
+                    applications for non-profit initiatives
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Engineered custom WordPress plugin for interactive SVG map
+                    directory, enhancing data visualization
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Designed and developed cross-platform mobile directory app
+                    (Apache Cordova) for shelters
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Developed cURL scripts for automated data scraping and
+                    database inquiries, streamlining data acquisition
+                  </p>
+                </div>
+              </div>
+            </div>
 
-    <script src="./js/app.js"></script>
-    <script
-      src="https://kit.fontawesome.com/e6eca080f1.js"
-      crossorigin="anonymous"
-    ></script>
+            <div class="experience-item">
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-title">PHP Developer</h3>
+                  <p class="experience-company">Lancera Philippines</p>
+                </div>
+                <div class="experience-meta">
+                  <p class="experience-period">06/2012 - 06/2013</p>
+                  <p class="experience-location">Dumaguete, Philippines</p>
+                </div>
+              </div>
+              <div class="experience-achievements">
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Contributed to backend development using PHP, CakePHP,
+                    CodeIgniter, and MySQL
+                  </p>
+                </div>
+                <div class="achievement-item">
+                  <span class="bullet">•</span>
+                  <p>
+                    Focused on database management and application logic
+                    development
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="section">
+        <div class="container">
+          <div class="section-divider"></div>
+          <h2 class="section-title centered">Technologies</h2>
+
+          <div class="skills-grid">
+            <div class="skill-category">
+              <h3 class="skill-category-title">Front-End</h3>
+              <div class="skill-tags">
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Next.js</span>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h3 class="skill-category-title">Back-End</h3>
+              <div class="skill-tags">
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">PHP</span>
+                <span class="tech-tag">WordPress</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">MongoDB</span>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h3 class="skill-category-title">Cloud Services</h3>
+              <div class="skill-tags">
+                <span class="tech-tag"
+                  >AWS (EC2, Amplify, Lightsail, S3, CloudFront, Route53,
+                  Lambda, Cognito)</span
+                >
+                <span class="tech-tag">Firebase</span>
+                <span class="tech-tag">Google Cloud</span>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h3 class="skill-category-title">Tools and OS</h3>
+              <div class="skill-tags">
+                <span class="tech-tag">Git</span>
+                <span class="tech-tag">VSCode</span>
+                <span class="tech-tag">Linux</span>
+                <span class="tech-tag">macOS</span>
+                <span class="tech-tag">Windows</span>
+                <span class="tech-tag">Docker</span>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h3 class="skill-category-title">AI</h3>
+              <div class="skill-tags">
+                <span class="tech-tag">Cline</span>
+                <span class="tech-tag">Gemini CLI</span>
+                <span class="tech-tag">Gemini API</span>
+                <span class="tech-tag">OpenAI API</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section id="education" class="section">
+        <div class="container">
+          <div class="section-divider"></div>
+          <h2 class="section-title centered">Education</h2>
+
+          <div class="education-container">
+            <div class="education-item">
+              <div class="education-header">
+                <div class="education-title-group">
+                  <h3 class="education-title">
+                    Bachelor of Science in Information Technology
+                  </h3>
+                  <p class="education-school">Silliman University</p>
+                </div>
+                <div class="education-meta">
+                  <p class="education-period">06/2007 - 05/2012</p>
+                  <p class="education-location">Dumaguete, Philippines</p>
+                </div>
+              </div>
+              <p class="education-description">
+                Comprehensive program covering software development, database
+                management, system analysis, and web technologies. Built a
+                strong foundation in computer science principles and practical
+                application development.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section">
+        <div class="container">
+          <div class="section-divider"></div>
+
+          <div class="contact-content">
+            <h2 class="section-title centered">Let's Work Together</h2>
+            <p class="contact-description">
+              I'm always interested in new opportunities and exciting projects.
+              Whether you need a full-stack developer or want to discuss a
+              potential collaboration, I'd love to hear from you.
+            </p>
+
+            <div class="contact-buttons">
+              <a href="mailto:kristoff_ampong@live.com" class="btn-primary">
+                <span>📧</span>
+                Send Email
+              </a>
+              <a href="tel:+639258263405" class="btn-secondary">
+                <span>📱</span>
+                Call Me
+              </a>
+            </div>
+
+            <div class="contact-footer">
+              <p>
+                Based in Bacong, Philippines • Available for remote work
+                worldwide
+              </p>
+            </div>
+          </div>
+
+          <footer class="footer">
+            <p>&copy; 2024 Kristoff Ampong. All rights reserved.</p>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
   </body>
 </html>
