@@ -1,0 +1,4 @@
+exclude:
+  - PRODUCT.md
+  - DESIGN.md
+  - "*.json"
