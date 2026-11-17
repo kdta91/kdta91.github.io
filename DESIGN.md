@@ -17,6 +17,10 @@ colors:
   linaw-sage: "#a6dcbc"
   linaw-leaf: "#00c46a"
   linaw-line: "rgba(244, 242, 234, 0.16)"
+  dropcove-black: "#000000"
+  dropcove-white: "#ffffff"
+  dropcove-ash: "#a3a3a3"
+  dropcove-line: "rgba(255, 255, 255, 0.16)"
   tortui-slate: "#161d27"
   tortui-ink: "#e6edf3"
   tortui-muted: "#9aaabb"
@@ -95,6 +99,9 @@ rounded:
   focus: "4px"
   skip: "6px"
   terminal: "12px"
+  screen: "18px"
+  screen-inner: "8px"
+  latest-card: "24px"
   app-icon: "22.5%"
   phone-bezel: "14.5% / 6.7%"
   phone-screen: "12.8% / 5.9%"
@@ -127,6 +134,13 @@ components:
   button-primary-linaw:
     backgroundColor: "{colors.linaw-leaf}"
     textColor: "{colors.linaw-forest}"
+    typography: "{typography.button}"
+    rounded: "{rounded.pill}"
+    padding: "0.7rem 1.25rem"
+    height: "2.875rem"
+  button-primary-dropcove:
+    backgroundColor: "{colors.dropcove-white}"
+    textColor: "{colors.dropcove-black}"
     typography: "{typography.button}"
     rounded: "{rounded.pill}"
     padding: "0.7rem 1.25rem"
@@ -180,9 +194,9 @@ components:
 
 **Creative North Star: "The Product Shelf"**
 
-The site is a frame, not a brand. A cool concrete ground with graphite ink holds the page and owns no hue of its own; colour arrives only with the work. Each shipped product gets a full-bleed band painted in that app's own palette (Liftrix graphite and orange, Linaw forest and leaf, tortui slate and cyan), and the fixed masthead takes on the world of whichever band is passing beneath it. Leaving a product band returns you to concrete.
+The site is a frame, not a brand. A cool concrete ground with graphite ink holds the page and owns no hue of its own; colour arrives only with the work. Each shipped product gets a full-bleed band painted in that app's own palette (Liftrix graphite and orange, Linaw forest and leaf, DropCove black and white, tortui slate and cyan), and the fixed masthead takes on the world of whichever band is passing beneath it. Leaving a product band returns you to concrete.
 
-Density is editorial and sparse: one large condensed grotesque headline per region, generous band padding, and information organised by hairline rules rather than boxes. The only objects with physical presence are the products themselves, shown as running loops inside realistic CSS phones and a terminal window, and the hero shows two of them side by side, never overlapping. Everything else is flat type on a ground.
+Density is editorial and sparse: one large condensed grotesque headline per region, generous band padding, and information organised by hairline rules rather than boxes. The only objects with physical presence are the products themselves, shown as running loops inside realistic CSS phones, a Mac screen and a terminal window, and the hero features only the latest of them, in a card painted in its own world. Everything else is flat type on a ground.
 
 Three faces divide the work cleanly. Bricolage Grotesque, condensed and tightly tracked, carries every headline; Schibsted Grotesk carries reading text and controls; Martian Mono is reserved for data (platforms, versions, stacks) and for tortui's own name, which ends in a blinking cyan caret.
 
@@ -196,7 +210,7 @@ Three faces divide the work cleanly. Bricolage Grotesque, condensed and tightly 
 
 ## Colors
 
-Four worlds share one six-token contract; the frame is achromatic and each product world brings exactly one saturated accent.
+Five worlds share one six-token contract; the frame is achromatic and each product world brings exactly one accent (DropCove's is white, its own product's monochrome).
 
 ### Primary
 - **Graphite Ink** (frame-graphite): the frame's ink and also its "accent". Primary buttons, focus rings and text selection on concrete are graphite, so the frame never introduces a hue of its own.
@@ -205,10 +219,11 @@ Four worlds share one six-token contract; the frame is achromatic and each produ
 ### Secondary
 - **Liftrix Orange** (liftrix-orange): the single accent of the Liftrix band; primary button fill, focus ring and selection, with graphite text on it.
 - **Linaw Leaf** (linaw-leaf): the Linaw band's accent, carrying forest text.
+- **DropCove White** (dropcove-white): the DropCove band's accent, carrying black text; the hero card uses it while DropCove is the latest release.
 - **Terminal Cyan** (tortui-cyan): the tortui band's accent, the caret after its name and the `code` highlight in terminal captions.
 
 ### Neutral
-- **Liftrix Graphite** (liftrix-graphite), **Linaw Forest** (linaw-forest), **Terminal Slate** (tortui-slate): the band grounds. Each paints the full width of its band and, through the masthead, the `theme-color` meta.
+- **Liftrix Graphite** (liftrix-graphite), **Linaw Forest** (linaw-forest), **DropCove Black** (dropcove-black), **Terminal Slate** (tortui-slate): the band grounds. Each paints the full width of its band and, through the masthead, the `theme-color` meta.
 - **Liftrix Ink** (liftrix-ink), **Linaw Paper** (linaw-paper), **Terminal Ink** (tortui-ink): primary text in each product world (graphite plays this role on the frame).
 - **Frame Paper** (frame-paper): text on the graphite frame button and selection; never a ground.
 - **Frame Muted** (frame-muted), **Liftrix Muted** (liftrix-muted), **Linaw Sage** (linaw-sage), **Terminal Muted** (tortui-muted): ledes, meta lines, note bodies, stacks and inactive nav links.
@@ -244,26 +259,28 @@ Four worlds share one six-token contract; the frame is achromatic and each produ
 ### Named Rules
 **The Condensed Headline Rule.** Every Bricolage heading uses a reduced width axis (wdth 85 to 90) and negative tracking (-0.02em to -0.035em); larger sizes track tighter. Body sizes never use Bricolage.
 
-**The Mono Means Data Rule.** Martian Mono sets only machine-shaped content: platforms, versions, tech stacks, commands and a terminal product's name. It never sets prose, headings for non-terminal products, or labels above headings.
+**The Mono Means Data Rule.** Martian Mono sets only machine-shaped content: platforms, versions, tech stacks, commands and a terminal product's name. It never sets prose, headings for non-terminal products, or labels above headings; the one exception is the hero card's "Latest release" status tag.
 
 ## Layout
 
 A single centred column capped at 82rem with a fluid gutter (`clamp(1rem, 4vw, 3rem)`); every band keeps full-bleed colour while its content aligns to the same max width by padding inline with `max(gutter, (100% - max) / 2)`.
 
-- **Hero:** copy beside two phones shown in full. The hero has a bottom pad of `clamp(3.5rem, 8vh, 5.5rem)` so the devices never touch the band below (the owner asked for this). At 900px and up there are two columns (5fr copy, 6fr stage) and the hero is capped at `min(88svh, 54rem)`. The stage is a two-column grid: Liftrix's phone on the left and Linaw's on the right, set 18% lower. **They never overlap**: the owner rejected an overlapping shelf because it hid the screens. A 58px left gutter holds the shared play/pause control (52px on mobile). Below 900px the stage sits under the copy with the same two phones. tortui is not in the hero; it lives in its own band.
-- **Project bands:** vertical padding `clamp(5rem, 12vh, 8rem)`. At 900px and up, 5fr summary and 7fr detail; the summary is sticky at 6.5rem from the top while the media, notes and stack scroll past it. The second band mirrors to 7fr / 5fr with the summary on the right, so bands alternate sides. Notes stack as hairline-divided rows; in the terminal band they sit as three columns.
+- **Hero:** copy beside one "Latest release" card, never a lineup of every product (the owner, 2026-11-17: the hero can't list everything, so it must not grow with the shelf). The card is a plain `div` (not a landmark) carrying the featured product's own `data-theme`, so it paints that app's world on the concrete: a 24px-radius panel with a hairline ring and a soft drop shadow, a mono "Latest release" tag with an accent dot, the product's media (screen, phone or terminal; a phone is capped at 17rem and centred), and a link row (44px icon, name in the display face, a one-line pitch, a down arrow) that jumps to the product's band. To feature a new release, swap the card's `data-theme`, its media figure and its link; the newest product also leads the Work section. The masthead observer skips the card (`:not(.hero-latest)`). At 900px and up: 5fr copy, 6fr card, vertically centred, hero capped at `min(88svh, 54rem)`. Below 900px the card sits under the copy.
+- **Project bands:** vertical padding `clamp(5rem, 12vh, 8rem)`. At 900px and up, 5fr summary and 7fr detail; the summary is sticky at 6.5rem from the top while the media, notes and stack scroll past it. Even-numbered bands mirror to 7fr / 5fr with the summary on the right (`:nth-child(even)`), so bands alternate sides whatever the order. Work runs newest first. Notes stack as hairline-divided rows; in the terminal band they sit as three columns.
 - **Capabilities index:** a heavy ink rule opens the list; each row is name, stack and a plus control. At 900px and up rows split into two equal columns plus the control, and the opened detail indents to the 50% line.
 - **Contact:** centred at 900px and up, left-aligned below.
-- **Breakpoints:** 900px (multi-column), 600px (the hero gutter narrows to 52px; the band terminal crops to its left pane at 5 / 4), 420px (tighter masthead).
+- **Breakpoints:** 900px (multi-column), 600px (the band terminal crops to its left pane at 5 / 4), 420px (tighter masthead).
 
 ## Elevation & Depth
 
-The page is flat. Grounds are solid colour, chrome separates by one-pixel hairlines (the condensed masthead and band seams draw theirs with a `0 1px 0` line shadow, not a blur), and depth is reserved for the products: phone bezels, the terminal window and app icons are the only things that cast shadows, because they are the physical objects on the shelf.
+The page is flat. Grounds are solid colour, chrome separates by one-pixel hairlines (the condensed masthead and band seams draw theirs with a `0 1px 0` line shadow, not a blur), and depth is reserved for the products: phone bezels, the Mac screen, the terminal window, app icons and the hero's latest-release card (a product shown on the shelf) are the only things that cast shadows.
 
 ### Shadow Vocabulary
 - **Device Body** (`box-shadow: 0 0 0 1.5px #4a4c52, 0 0 0 2.5px #1b1c1f, inset 0 0 0 1px rgba(255,255,255,0.06), 0 30px 60px -20px rgba(0,0,0,0.5), 0 10px 20px -10px rgba(0,0,0,0.3)`): phones. The first two rings draw the titanium edge and its dark outer lip; the last two lift the device.
 - **Terminal Lift** (`box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 24px 48px -18px rgba(0,0,0,0.5)`): the terminal window.
 - **Icon Seat** (`box-shadow: 0 0 0 1px var(--line), 0 10px 24px -12px rgba(0,0,0,0.5)`): app icons; the portrait uses the hairline ring alone.
+- **Screen Lift** (`box-shadow: 0 0 0 1px #3a3b40, inset 0 0 0 1px rgba(255,255,255,0.05), 0 30px 60px -24px rgba(255,255,255,0.08)`): the Mac screen frame, its faint light lift reading on black.
+- **Card Lift** (`box-shadow: 0 0 0 1px var(--line), 0 40px 80px -40px rgba(0,0,0,0.45)`): the hero's latest-release card.
 - **Hairline Seam** (`box-shadow: 0 1px 0 var(--line)` / `0 -1px 0 var(--line)`): the condensed masthead's bottom edge and the seam between adjacent bands.
 
 ### Named Rules
@@ -271,12 +288,12 @@ The page is flat. Grounds are solid colour, chrome separates by one-pixel hairli
 
 ## Shapes
 
-Two shape families. Interface controls are fully round: pill buttons (999px), circular loop toggles and the circular portrait. Product objects follow their real geometry: phones with elliptical corners (14.5% / 6.7%) around screens at 12.8% / 5.9% and a pill-shaped Dynamic Island, an app icon squircle at 22.5%, and a terminal window at 12px with three 10px circular window dots. Content containers have no corners at all: notes, index rows and the stack strip are open, bounded only by horizontal hairlines.
+Two shape families. Interface controls are fully round: pill buttons (999px), circular loop toggles and the circular portrait. Product objects follow their real geometry: phones with elliptical corners (14.5% / 6.7%) around screens at 12.8% / 5.9% and a pill-shaped Dynamic Island, an app icon squircle at 22.5%, and a terminal window at 12px with three 10px circular window dots, and a Mac screen at 18px (8px inside). The hero's latest-release card is the one rounded container (24px), because it holds a product's world. Other content containers have no corners at all: notes, index rows and the stack strip are open, bounded only by horizontal hairlines.
 
 ## Components
 
 ### Buttons
-Confident pills that take the band's accent, so the same button is graphite on concrete, orange on Liftrix, leaf on Linaw and cyan on tortui.
+Confident pills that take the band's accent, so the same button is graphite on concrete, orange on Liftrix, leaf on Linaw, white on DropCove and cyan on tortui.
 - **Shape:** fully round (pill), minimum height 2.875rem.
 - **Primary:** accent fill with on-accent text, 600 weight, a 1.125em inline SVG icon before or after the label (GitHub mark, or an up-right arrow for outbound product links), gap 0.6rem.
 - **Hover / Focus:** lifts 1px (200ms ease-out) and settles on press; focus is a 2px accent outline at 3px offset. Colour changes ride the 650ms world transition.
@@ -291,10 +308,11 @@ A full-bleed section with `data-theme` set to its product. The summary holds the
 
 ### Device Frames
 - **Phone:** a realistic CSS device at aspect 600 / 1304: a thin 1.7% black bezel, a titanium edge ring, and a black Dynamic Island pill (29% by 3.9%, 3.1% from the top) laid over the capture's empty status-bar centre. Video covers the screen with black behind. The phone is identical in every world.
+- **Screen:** a Mac display for DropCove: a 0.625rem near-black bezel with an 18px radius and a hairline edge ring, the capture inside at 8px radius. The recording already carries its own menu bar and notch, so the frame draws neither. Video is cropped to 21 / 10 from the 2400 × 840 recording: the left edge lands in the menu-bar gap after "Edit", the clock drops out, and the whole notch panel stays in frame. The loop is re-cut to open on the drop zone (2 s into the source recording) so first play matches the poster. In the hero card the bezel slims to 0.375rem; in the band the screen keeps a 58px bottom margin for its loop control.
 - **Terminal:** tortui-slate window with a 30px darker title bar (three dots and the command in mono), video at 1100 / 440, and a hairline-topped mono caption with the command highlighted in cyan.
 
 ### Loop Control
-Every looping video gets a 44px circular play/pause button injected by script, with an SVG glyph and a label naming the video. On project phones it sits centred 58px below the device, tinted from the world's ink at 10%, so it never covers the app UI being demonstrated. In the hero, one control in the stage's left gutter, 30% down, plays and pauses both together (52px gutter on mobile). On the terminal it sits at the right end of the caption row. Loops play only while 25% visible and never start on their own under reduced motion; a user's pause is respected on re-entry.
+Every looping video gets a 44px circular play/pause button injected by script, with an SVG glyph and a label naming the video. On project phones it sits centred 58px below the device, tinted from the world's ink at 10%, so it never covers the app UI being demonstrated. On a screen frame it sits off the capture: below the frame at the right in a band, and at the right end of the "Latest release" tag row in the hero card, tinted from the ink at 12% so the accent focus ring lands on the world ground. On the terminal it sits at the right end of the caption row. Loops play only while 25% visible and never start on their own under reduced motion; a user's pause is respected on re-entry.
 
 ### Capabilities Index
 A disclosure list: each row names a kind of work, and opening it says what a client gets from it. Each row is a native `details` whose summary sets the capability in the index-area face, its stack in mono, and a 1.5rem plus icon that rotates 45° to an x when open (350ms). Hover underlines the area name with a 1px line; the opened paragraph fades down 4px over 400ms.
@@ -303,7 +321,7 @@ A disclosure list: each row names a kind of work, and opening it says what a cli
 
 ### Do:
 - **Do** add a new product as one `[data-theme]` block of six custom properties and a full-bleed band; let every component read the variables.
-- **Do** keep concrete (#e7e7e3) and graphite (#121316) as the only colours of frame regions.
+- **Do** keep concrete (#e7e7e3) and graphite (#121316) as the only colours of frame regions; the hero's latest-release card is a product world placed on the frame, not frame colour.
 - **Do** set headings in Bricolage at a reduced width axis with negative tracking, and reading text in Schibsted Grotesk.
 - **Do** separate content with 1px hairlines at the world's line colour; open lists with a full-ink rule.
 - **Do** show products as real captures inside CSS device frames, and give every loop a visible 44px play/pause control placed off the app UI.
@@ -315,4 +333,4 @@ A disclosure list: each row names a kind of work, and opening it says what a cli
 - **Don't** put blur shadows on chrome (buttons, masthead, rows, sections); shadows belong to devices and icons.
 - **Don't** set prose, non-terminal product names or labels above headings in Martian Mono.
 - **Don't** wrap projects in same-size cards on a shared ground; each product owns a full-bleed band.
-- **Don't** hard-code a world colour inside a component that can appear in more than one world; only the terminal (always tortui) and the phone (device materials) carry literal colours.
+- **Don't** hard-code a world colour inside a component that can appear in more than one world; only the terminal (always tortui), the phone and the Mac screen (device materials) carry literal colours.

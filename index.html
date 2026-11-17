@@ -6,7 +6,7 @@
     <title>Kristoff Ampong · Full-stack and mobile engineer</title>
     <meta
       name="description"
-      content="Full-stack and mobile engineer with 14 years in production. I design, build and ship products end to end: Liftrix, Linaw and Tortui."
+      content="Full-stack and mobile engineer with 14 years in production. I design, build and ship products end to end: DropCove, Liftrix, Linaw and Tortui."
     />
     <meta property="og:title" content="Kristoff Ampong" />
     <meta property="og:description" content="I design, build and ship products end to end." />
@@ -56,26 +56,74 @@
           </div>
         </div>
 
-        <div class="hero-stage" aria-label="Liftrix and Linaw running">
-          
-          
-          <figure class="phone stage-phone stage-lead">
-            <video class="loop" muted loop playsinline preload="none" poster="media/liftrix-poster.webp" aria-label="Liftrix screens: interval timer, Snap WOD editor and Bar Path">
-              <source src="media/liftrix.webm" type="video/webm" />
-              <source src="media/liftrix.mp4" type="video/mp4" />
+        <!-- Latest: one product at a time. To feature a new one, swap the
+             data-theme, the media figure and the link; nothing else changes. -->
+        <div class="hero-latest" data-theme="dropcove">
+          <p class="latest-tag">Latest release</p>
+          <figure class="screen latest-media">
+            <video class="loop" muted loop playsinline preload="none" poster="media/dropcove-poster.webp" aria-label="Latest release, DropCove: a screenshot dragged onto the notch, the ranked action tiles, and the converted result">
+              <source src="media/dropcove.webm" type="video/webm" />
+              <source src="media/dropcove.mp4" type="video/mp4" />
             </video>
           </figure>
-          <figure class="phone stage-phone stage-back">
-            <video class="loop" muted loop playsinline preload="none" poster="media/linaw-poster.webp" aria-label="Linaw screens: voice entry, home balance and receipt scan">
-              <source src="media/linaw.webm" type="video/webm" />
-              <source src="media/linaw.mp4" type="video/mp4" />
-            </video>
-          </figure>
+          <a class="latest-link" href="#dropcove" aria-label="Latest release: DropCove. Drop a file on your Mac's notch to convert, compress or OCR it. Jump to the project.">
+            <img src="images/projects/dropcove-icon.png" alt="" width="44" height="44" />
+            <span class="latest-text">
+              <strong>DropCove</strong>
+              <span>Drop a file on your Mac's notch to convert, compress or OCR it.</span>
+            </span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </section>
 
       <!-- Work -->
       <div id="work" class="work">
+        <!-- DropCove -->
+        <section class="project" id="dropcove" data-theme="dropcove" aria-labelledby="dropcove-name">
+          <div class="project-summary">
+            <img src="images/projects/dropcove-icon.png" alt="" class="app-icon" width="72" height="72" />
+            <h2 class="project-name" id="dropcove-name">DropCove</h2>
+            <p class="meta">macOS · free download · Pro one-time · v1.1</p>
+            <p class="project-line">
+              Drop a file on your MacBook's notch to convert, compress, OCR or
+              merge it. Copy a token, a color or some JSON and it tells you what it is.
+            </p>
+            <div class="project-links">
+              <a class="button" href="https://dropcoveapp.com" target="_blank" rel="noopener">dropcoveapp.com <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+
+          <div class="project-detail">
+            <figure class="screen project-screen">
+              <video class="loop" muted loop playsinline preload="none" poster="media/dropcove-poster.webp" aria-label="DropCove: a screenshot dragged onto the notch, the ranked action tiles, and the converted result">
+                <source src="media/dropcove.webm" type="video/webm" />
+                <source src="media/dropcove.mp4" type="video/mp4" />
+              </video>
+            </figure>
+
+            <dl class="notes">
+              <div>
+                <dt>The notch is the drop target</dt>
+                <dd>Drag a file to the top of the screen and the notch opens with the actions that fit, ranked by what you use. For an image, the top action is already done before you click.</dd>
+              </div>
+              <div>
+                <dt>A clipboard that reads what you copy</dt>
+                <dd>Ten detectors for JWTs, colors, JSON, timestamps, links and more. API keys are masked, never saved, and cleared after a minute.</dd>
+              </div>
+              <div>
+                <dt>Nothing leaves the Mac</dt>
+                <dd>Every action runs on the device, with video and OCR in a separate helper process. No account and no telemetry; the only network traffic is the update check.</dd>
+              </div>
+              <div>
+                <dt>Offline licenses</dt>
+                <dd>Pro keys are Ed25519-signed and checked with CryptoKit on the device. A Cloudflare Worker takes the store's webhook, signs the key and emails it.</dd>
+              </div>
+            </dl>
+            <p class="stack">Swift 6 · AppKit · SwiftUI · AVFoundation · PDFKit · Vision · XPC · SQLite · Sparkle · CryptoKit · Cloudflare Workers · Astro</p>
+          </div>
+        </section>
+
         <!-- Liftrix -->
         <section class="project" data-theme="liftrix" aria-labelledby="liftrix-name">
           <div class="project-summary">
@@ -216,12 +264,12 @@
         <div class="index">
           <details>
             <summary>
-              <span class="index-area">Mobile apps</span>
-              <span class="index-stack">React Native · Expo · SwiftUI · Kotlin</span>
+              <span class="index-area">Mobile and Mac apps</span>
+              <span class="index-stack">React Native · Expo · SwiftUI · AppKit · Kotlin</span>
               <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
             </summary>
             <p>
-              You bring the idea; I get it onto the App Store and Google Play. Native features where they matter, subscriptions that just work, and the back-and-forth with app review handled for you. Liftrix and Linaw are two I took there on my own.
+              You bring the idea; I get it onto the App Store and Google Play. Native features where they matter, subscriptions that just work, and the back-and-forth with app review handled for you. Liftrix and Linaw are two I took there on my own, and DropCove is a Mac app I sell direct, signed and notarized.
             </p>
           </details>
           <details>
@@ -268,7 +316,7 @@
 
         <div class="stack-strip">
           <h3>The full stack</h3>
-          <p>TypeScript · Swift · Kotlin · Go · Python · SQL · React 19 · Next.js 16 · Node.js · React Native · Expo · SwiftUI · Supabase · PostgreSQL · pgvector · Redis · Socket.IO · OpenAI · Gemini · Claude · Vertex AI · AWS · Cloudflare Workers · Docker · GitHub Actions · Vitest · Playwright · Maestro</p>
+          <p>TypeScript · Swift · Kotlin · Go · Python · SQL · React 19 · Next.js 16 · Node.js · React Native · Expo · SwiftUI · AppKit · Supabase · PostgreSQL · pgvector · Redis · Socket.IO · OpenAI · Gemini · Claude · Vertex AI · AWS · Cloudflare Workers · Docker · GitHub Actions · Vitest · Playwright · Maestro</p>
         </div>
       </section>
 

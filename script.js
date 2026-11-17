@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   onScroll()
 
   // Worlds: the masthead takes on the palette of the band passing beneath it.
-  const bands = document.querySelectorAll("main [data-theme]")
+  const bands = document.querySelectorAll("main [data-theme]:not(.hero-latest)")
   const setWorld = (theme) => {
     if (masthead.dataset.theme === theme) return
     masthead.dataset.theme = theme
@@ -62,20 +62,14 @@ document.addEventListener("DOMContentLoaded", () => {
     video.addEventListener("pause", sync)
     sync()
 
-    // In the hero one control runs both phones; elsewhere each loop has its own.
-    const stage = video.closest(".hero-stage")
-    const group = stage ? [...stage.querySelectorAll("video.loop")] : [video]
     const flip = () => {
-      const resume = video.paused
-      group.forEach((v) => {
-        if (resume) {
-          delete v.dataset.userPaused
-          v.play().catch(() => {})
-        } else {
-          v.dataset.userPaused = "true"
-          v.pause()
-        }
-      })
+      if (video.paused) {
+        delete video.dataset.userPaused
+        video.play().catch(() => {})
+      } else {
+        video.dataset.userPaused = "true"
+        video.pause()
+      }
     }
     toggle.addEventListener("click", flip)
     video.addEventListener("click", flip)

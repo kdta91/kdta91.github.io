@@ -29,6 +29,15 @@
   --on-accent: #04341f;
 }
 
+[data-theme="dropcove"] {
+  --bg: #000;
+  --ink: #fff;
+  --muted: #a3a3a3;
+  --line: rgba(255, 255, 255, 0.16);
+  --accent: #fff;
+  --on-accent: #000;
+}
+
 [data-theme="tortui"] {
   --bg: #161d27;
   --ink: #e6edf3;
@@ -313,23 +322,107 @@ code,
   margin-top: 0.5rem;
 }
 
-/* Two products side by side, never overlapping, cropped by the hero's
-   bottom edge like a product shot. The control sits in the left margin. */
-.hero-stage {
-  position: relative;
-  align-self: end;
+/* One featured product, painted in its own world. The slot holds any media
+   (screen, phone or terminal), so the hero never grows with the shelf. */
+.hero-latest {
+  align-self: center;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(0.75rem, 2.5vw, 1.75rem);
-  align-items: start;
-  width: 100%;
-  max-width: 40rem;
-  padding-left: 58px;
-  justify-self: center;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(0.875rem, 1.6vw, 1.25rem);
+  border-radius: 24px;
+  box-shadow: 0 0 0 1px var(--line), 0 40px 80px -40px rgba(0, 0, 0, 0.45);
 }
 
-.stage-back {
-  margin-top: 18%;
+.latest-tag {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 0.5rem;
+  padding-inline: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.latest-tag::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Inside the card the card is the frame, so the bezel slims down. Its
+   control moves up into the tag row, off the capture. */
+.latest-media.screen {
+  padding: 0.375rem;
+  border-radius: 14px;
+}
+
+.latest-media .loop-toggle {
+  top: calc(-1rem - 44px);
+  right: 0;
+  bottom: auto;
+}
+
+.latest-media.phone {
+  width: min(60%, 17rem);
+  justify-self: center;
+  margin-bottom: 58px;
+}
+
+.latest-link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 44px;
+  padding: 0.25rem;
+  text-decoration: none;
+  border-radius: 14px;
+}
+
+.latest-link img {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 22.5%;
+}
+
+.latest-text {
+  display: grid;
+  line-height: 1.35;
+}
+
+.latest-text strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: "opsz" 36, "wdth" 90;
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+}
+
+.latest-text span {
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.latest-link .icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  margin-right: 0.5rem;
+  transition: transform 250ms var(--ease-out);
+}
+
+.latest-link:hover .icon {
+  transform: translateY(3px);
+}
+
+.latest-link:hover strong {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 
 .availability {
@@ -338,7 +431,7 @@ code,
 }
 
 /* Play/pause for every loop (WCAG 2.2.2), added by script.js. */
-.project-detail .media {
+.media {
   position: relative;
 }
 
@@ -404,18 +497,6 @@ code,
   min-height: 52px;
 }
 
-/* The hero phones are cropped at the bottom; one control beside them runs both. */
-.stage-lead .loop-toggle {
-  left: -58px;
-  top: 30%;
-  bottom: auto;
-  translate: none;
-}
-
-.stage-back .loop-toggle {
-  display: none;
-}
-
 /* ── Device frames ────────────────────────────────────────────────────── */
 .phone {
   position: relative;
@@ -449,6 +530,45 @@ code,
   border-radius: 12.8% / 5.9%;
   background: #000;
   cursor: pointer;
+}
+
+/* A Mac display: the capture already carries its own menu bar and notch. */
+.screen {
+  padding: 0.625rem;
+  border-radius: 18px;
+  background: #0b0b0c;
+  box-shadow: 0 0 0 1px #3a3b40, inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 30px 60px -24px rgba(255, 255, 255, 0.08);
+}
+
+.screen video {
+  width: 100%;
+  /* Trim empty desktop at both sides: the crop lands in a menu-bar gap,
+     hides the clock and keeps the whole notch panel. */
+  aspect-ratio: 21 / 10;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f7f7f7;
+  cursor: pointer;
+}
+
+/* Screen controls sit off the capture (the notch panel and result files
+   reach the corners), on the world ground where the accent focus ring shows. */
+.screen .loop-toggle {
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  color: var(--ink);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.project-screen {
+  margin-bottom: 58px;
+}
+
+.project-screen .loop-toggle {
+  top: calc(100% + 14px);
+  right: 0;
+  bottom: auto;
 }
 
 .terminal {
@@ -748,17 +868,9 @@ code,
 @media (min-width: 900px) {
   .hero {
     grid-template-columns: 5fr 6fr;
+    gap: clamp(3rem, 5vw, 5rem);
     min-height: min(88svh, 54rem);
-    align-items: end;
-  }
-
-  .hero-copy {
-    align-self: center;
-  }
-
-  .hero-stage {
-    max-width: none;
-    max-width: 40rem;
+    align-items: center;
   }
 
   .project {
@@ -772,11 +884,12 @@ code,
     top: 6.5rem;
   }
 
-  .project:nth-child(2) {
+  /* Bands alternate sides by position, so reordering the shelf keeps the rhythm. */
+  .project:nth-child(even) {
     grid-template-columns: 7fr 5fr;
   }
 
-  .project:nth-child(2) .project-summary {
+  .project:nth-child(even) .project-summary {
     order: 2;
   }
 
@@ -819,14 +932,6 @@ code,
 }
 
 @media (max-width: 600px) {
-  .hero-stage {
-    padding-left: 52px;
-  }
-
-  .stage-lead .loop-toggle {
-    left: -52px;
-  }
-
   /* Crop the 80-column recording to its left pane so the glyphs stay readable. */
   .project-terminal video {
     aspect-ratio: 5 / 4;
