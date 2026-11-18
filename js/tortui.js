@@ -50,7 +50,7 @@ export default function init(root, { motion }) {
   }
 
   function renderTabs() {
-    tabs.innerHTML = TABS.map((t, i) => `<span class="${t === tab ? "is-on" : ""}">${t} [${i + 1}]</span>`).join('<span class="tt-dim"> · </span>')
+    tabs.innerHTML = TABS.map((t, i) => `<button type="button" class="tt-tab${t === tab ? " is-on" : ""}" data-tab="${t}"${t === tab ? ' aria-current="page"' : ""}>${t} [${i + 1}]</button>`).join('<span class="tt-dim" aria-hidden="true"> · </span>')
   }
 
   function bar(p, cells) {
@@ -129,7 +129,7 @@ export default function init(root, { motion }) {
     quitting = false
     render()
     if (tab === "Search") input.focus()
-    else if (document.activeElement === input) term.focus()
+    else if (!term.contains(document.activeElement) || document.activeElement === input || !document.activeElement.isConnected) term.focus()
     const r = results[cursor]
     say(
       tab === "Results"
@@ -146,16 +146,20 @@ export default function init(root, { motion }) {
 
   function search(q) {
     query = q.trim()
-    clearInterval(searching && searching.id)
-    searching = { frame: 0 }
+    if (searching) clearInterval(searching.id), clearTimeout(searching.done)
+    const job = { frame: 0 }
+    searching = job
+    // The suggestion that was clicked is about to be re-rendered away; keep the keys working.
+    if (!term.contains(document.activeElement) || document.activeElement !== input) term.focus()
     render()
     say(`Searching for ${query || "everything"}`)
-    searching.id = setInterval(() => {
-      searching.frame++
+    job.id = setInterval(() => {
+      job.frame++
       if (!motion.reduced()) render()
     }, 80)
-    setTimeout(() => {
-      clearInterval(searching.id)
+    job.done = setTimeout(() => {
+      clearInterval(job.id)
+      if (searching !== job || exited) return
       searching = null
       const words = query.toLowerCase().split(/\s+/).filter(Boolean)
       results = ROWS.filter((r) => words.every((w) => `${r.title} ${r.cat}`.toLowerCase().includes(w))).sort((a, b) => b.s - a.s)
@@ -225,8 +229,9 @@ export default function init(root, { motion }) {
   }
 
   function onKey(e) {
-    if (e.metaKey || e.ctrlKey || e.altKey) return
+    if (e.metaKey || e.ctrlKey || e.altKey || e.key === "Tab") return
     const k = e.key
+    if (e.target.closest && e.target.closest("button") && (k === "Enter" || k === " ")) return
     const inInput = e.target === input
     if (exited) {
       if (k === "Enter") {
@@ -234,6 +239,9 @@ export default function init(root, { motion }) {
         exited = false
         downloads = []
         results = []
+        query = ""
+        cursor = 0
+        input.value = ""
         go("Search")
       }
       return
@@ -244,6 +252,7 @@ export default function init(root, { motion }) {
         quitting = false
         clearInterval(timer)
         timer = null
+        if (searching) clearInterval(searching.id), clearTimeout(searching.done), (searching = null)
         render()
         term.focus()
         say("tortui exited. Press Enter to run it again.")
@@ -274,7 +283,9 @@ export default function init(root, { motion }) {
         if (tab === "Downloads" && d) (d.paused = !d.paused), render(), tick()
       },
       x: () => {
-        if (tab === "Downloads" && downloads.length) downloads.shift(), render()
+        // Remove the item the "[x] remove" hint sits on: the first active one.
+        const i = downloads.findIndex((d) => d.done < 1)
+        if (tab === "Downloads" && i >= 0) downloads.splice(i, 1), render(), say("Removed")
       },
       1: () => go("Search"), 2: () => go("Results"), 3: () => go("Details"), 4: () => go("Downloads"),
     }
@@ -290,6 +301,8 @@ export default function init(root, { motion }) {
     search(input.value)
   })
   term.addEventListener("click", (e) => {
+    const tabBtn = e.target.closest("[data-tab]")
+    if (tabBtn) return go(tabBtn.dataset.tab)
     const link = e.target.closest("[data-q]")
     if (link) {
       input.value = link.dataset.q

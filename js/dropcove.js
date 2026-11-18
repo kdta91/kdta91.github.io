@@ -73,7 +73,8 @@ export default function init(stage, { motion }) {
     convert: {
       title: "Convert",
       line: () => (webpOK === false ? "JPEG · quality 80%" : "WebP · quality 80%"),
-      run: (s) => encode(s.bitmap, s.w, s.h, webpOK === false ? "image/jpeg" : "image/webp", 0.8),
+      // Canvas silently falls back to PNG for a type it can't encode, so probe first.
+      run: async (s) => encode(s.bitmap, s.w, s.h, (await webpProbe) ? "image/webp" : "image/jpeg", 0.8),
       name: (base, blob) => `${base}.${EXT[blob.type] || "img"}`,
     },
     resize: {
@@ -111,6 +112,11 @@ export default function init(stage, { motion }) {
   let result = null // { blob, url, name, action }
   let prerun = null // { key, promise }
   let webpOK = null
+  const webpProbe = encode(Object.assign(document.createElement("canvas"), { width: 1, height: 1 }), 1, 1, "image/webp", 0.8)
+    .then((b) => b.type === "image/webp")
+    .catch(() => false)
+    .then((ok) => (webpOK = ok))
+  let token = 0 // bumped by every load and close; stale async work checks it and bails
   let dragDepth = 0
 
   const say = (text) => {
@@ -128,15 +134,16 @@ export default function init(stage, { motion }) {
     notch.dataset.state = state
     if (state === "idle") return setOpen(false)
     setOpen(true)
-    if (state === "empty" || state === "drag") {
+    if (state === "empty" || state === "drag" || (state === "working" && !src)) {
+      const busy = state === "working"
       panel.innerHTML = `
         <div class="dc-drop${state === "drag" ? " is-over" : ""}">
           ${svg("photo")}
-          <p class="dc-drop-title">${state === "drag" ? "Release to drop" : "Drop an image on the notch"}</p>
+          <p class="dc-drop-title">${busy ? "Opening the image…" : state === "drag" ? "Release to drop" : "Drop an image on the notch"}</p>
           <p class="dc-drop-sub">PNG, JPEG, WebP or GIF. It stays in this browser.</p>
           <div class="dc-drop-actions">
-            <button type="button" class="dc-btn primary" data-act="pick">Choose an image</button>
-            <button type="button" class="dc-btn" data-act="sample">Try a sample</button>
+            <button type="button" class="dc-btn primary" data-act="pick"${busy ? " disabled" : ""}>Choose an image</button>
+            <button type="button" class="dc-btn" data-act="sample"${busy ? " disabled" : ""}>Try a sample</button>
           </div>
         </div>
         <button type="button" class="dc-key dc-close" data-act="close" aria-label="Close the notch">esc</button>`
@@ -206,10 +213,22 @@ export default function init(stage, { motion }) {
 
   let errorText = ""
   let busyKey = null
+
+  // Re-rendering replaces the panel; keep focus on the same control, or the first one.
+  function renderKeepFocus() {
+    const el = document.activeElement
+    const key = el && panel.contains(el) ? el.dataset.run || el.dataset.act : null
+    render()
+    const again = key && panel.querySelector(`[data-run="${key}"], [data-act="${key}"]`)
+    if (again && !again.disabled) again.focus()
+    else if (key || !stage.contains(document.activeElement)) focusTop()
+  }
+
   function fail(text) {
     errorText = text
     state = "error"
-    render()
+    renderKeepFocus()
+    focusTop()
     say(text)
   }
 
@@ -219,17 +238,26 @@ export default function init(stage, { motion }) {
       return fail("The demo here takes images. The app also handles video and PDF.")
     }
     if (file.size > MAX_BYTES) return fail("That image is over 40 MB. Try a smaller one.")
+    const t = ++token
     clear()
     state = "working"
+    renderKeepFocus()
+    let next
     try {
       const bitmap = await decode(file)
+      if (t !== token) return bitmap.close && bitmap.close()
       const w = bitmap.width
       const h = bitmap.height
-      if (!w || !h || w * h > 50e6) return fail("That image is too large to convert in a browser tab.")
-      src = { file, bitmap, w, h, type: file.type, base: file.name.replace(/\.[^.]+$/, "") || "image", url: URL.createObjectURL(file) }
+      if (!w || !h || w * h > 50e6) {
+        if (bitmap.close) bitmap.close()
+        return fail("That image is too large to convert in a browser tab.")
+      }
+      next = { file, bitmap, w, h, type: file.type, base: file.name.replace(/\.[^.]+$/, "") || "image", url: URL.createObjectURL(file) }
     } catch (_) {
-      return fail("This browser can't read that image. Try a PNG or JPEG.")
+      if (t === token) fail("This browser can't read that image. Try a PNG or JPEG.")
+      return
     }
+    src = next
     state = "loaded"
     busyKey = null
     render()
@@ -237,18 +265,13 @@ export default function init(stage, { motion }) {
     say(`${src.file.name}, ${formatBytes(src.file.size)}. Three actions; the top one, ${actions[ranked()[0]].title}, is ready.`)
     // The top action is already done before you click, like the app does for images.
     const key = ranked()[0]
-    const promise = actions[key].run(src).then((blob) => {
-      if (key === "convert" && webpOK === null) webpOK = blob.type === "image/webp"
-      return blob
-    })
+    const promise = actions[key].run(src)
     prerun = { key, promise, for: src }
     promise
       .then((blob) => {
-        if (prerun && prerun.promise === promise && state === "loaded") {
+        if (t === token && prerun && prerun.promise === promise && state === "loaded") {
           prerun.size = blob.size
-          const focused = document.activeElement && document.activeElement.dataset.run
-          render()
-          if (focused) panel.querySelector(`[data-run="${focused}"]`)?.focus()
+          renderKeepFocus()
         }
       })
       .catch(() => {})
@@ -256,26 +279,28 @@ export default function init(stage, { motion }) {
 
   async function run(key) {
     if (!src || state !== "loaded") return
+    const t = token
+    const s = src
     state = "working"
     busyKey = key
-    render()
+    renderKeepFocus()
     try {
       let blob
-      if (prerun && prerun.key === key && prerun.for === src) blob = await prerun.promise
-      else blob = await actions[key].run(src)
-      if (key === "convert" && webpOK === null) webpOK = blob.type === "image/webp"
+      if (prerun && prerun.key === key && prerun.for === s) blob = await prerun.promise
+      else blob = await actions[key].run(s)
+      if (t !== token || src !== s) return // closed, or another image arrived meanwhile
       let note = ""
       if (key === "convert" && blob.type !== "image/webp") note = "This browser can't encode WebP, so you got JPEG. The app always writes WebP."
-      if (key === "resize" && Math.max(src.w, src.h) <= LONG_EDGE) note = `Already ${LONG_EDGE} px or smaller, so the size stayed and the file was re-encoded.`
+      if (key === "resize" && Math.max(s.w, s.h) <= LONG_EDGE) note = `Already ${LONG_EDGE} px or smaller, so the size stayed and the file was re-encoded.`
       uses[key]++
       if (result) URL.revokeObjectURL(result.url)
-      result = { blob, url: URL.createObjectURL(blob), name: actions[key].name(src.base, blob), note }
+      result = { blob, url: URL.createObjectURL(blob), name: actions[key].name(s.base, blob), note }
       state = "done"
       render()
       panel.querySelector(".dc-btn.primary")?.focus()
-      say(`${actions[key].title} done. ${formatBytes(src.file.size)} to ${formatBytes(blob.size)}, ${percent(src.file.size, blob.size).replace("−", "minus ")}. Download is ready. Nothing left your browser.`)
+      say(`${actions[key].title} done. ${formatBytes(s.file.size)} to ${formatBytes(blob.size)}, ${percent(s.file.size, blob.size).replace("\u2212", "minus ")}. Download is ready. Nothing left your browser.`)
     } catch (_) {
-      fail("That didn't work in this browser. Try another image.")
+      if (t === token && src === s) fail("That didn't work in this browser. Try another image.")
     }
   }
 
@@ -288,23 +313,28 @@ export default function init(stage, { motion }) {
     src = result = prerun = null
   }
 
-  const focusTop = () => panel.querySelector(".dc-tile, .dc-btn")?.focus()
+  const focusTop = () => panel.querySelector(".dc-tile:not([disabled]), .dc-btn:not([disabled]), .dc-key")?.focus()
 
   function close() {
+    token++ // a run in flight is abandoned; reopening shows the actions again
     state = "idle"
     render()
     lip.focus()
   }
 
   async function sample() {
+    if (state === "working") return
+    const t = ++token
     state = "working"
+    renderKeepFocus()
     try {
       const res = await fetch("media/dropcove-poster.webp")
       const bitmap = await createImageBitmap(await res.blob())
       const png = await encode(bitmap, bitmap.width, bitmap.height, "image/png")
-      load(new File([png], "Screenshot of DropCove.png", { type: "image/png" }))
+      if (bitmap.close) bitmap.close()
+      if (t === token) load(new File([png], "Screenshot of DropCove.png", { type: "image/png" }))
     } catch (_) {
-      fail("Couldn't load the sample. Choose an image instead.")
+      if (t === token) fail("Couldn't load the sample. Choose an image instead.")
     }
   }
 
@@ -321,7 +351,7 @@ export default function init(stage, { motion }) {
     if (!btn) return
     const act = btn.dataset.act
     if (btn.dataset.run) run(btn.dataset.run)
-    else if (act === "pick") picker.click()
+    else if (act === "pick" && state !== "working") picker.click()
     else if (act === "sample") sample()
     else if (act === "close") close()
     else if (act === "back") {

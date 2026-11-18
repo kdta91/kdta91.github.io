@@ -163,14 +163,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Command palette: ⌘K / Ctrl+K, or the masthead button.
   let palette
-  const openPalette = () => {
-    palette = palette || import("./js/palette.js").then((mod) => mod.default({ motion, loadDemo }))
-    palette.then((p) => p.open())
-  }
+  const loadPalette = () =>
+    (palette =
+      palette ||
+      import("./js/palette.js")
+        .then((mod) => mod.default({ motion, loadDemo }))
+        .catch((err) => {
+          palette = null // a failed load (offline, say) can be retried
+          throw err
+        }))
+  const openPalette = () => loadPalette().then((p) => p.open(), () => {})
   // Warm the palette once the page is idle, so a fast ⌘K never drops keystrokes.
-  ;(window.requestIdleCallback || setTimeout)(() => {
-    palette = palette || import("./js/palette.js").then((mod) => mod.default({ motion, loadDemo }))
-  })
+  ;(window.requestIdleCallback || setTimeout)(() => loadPalette().catch(() => {}))
   document.querySelectorAll("[data-palette-open]").forEach((b) => b.addEventListener("click", openPalette))
   document.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === "k") {

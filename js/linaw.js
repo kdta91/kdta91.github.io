@@ -16,8 +16,8 @@ const CATEGORIES = [
 
 const titleCase = (s) => s.replace(/\b\p{L}/gu, (c) => c.toUpperCase())
 
-// Turns spoken number words into digits: "five seventy five" -> "5.75" is too
-// ambiguous, so only plain numbers ("twelve", "two hundred fifty") are read.
+// Turns plain spoken numbers into digits ("twelve", "two hundred fifty").
+// Run-together forms like "five seventy five" are ambiguous and are not read as 5.75.
 function wordsToNumber(text) {
   return text.replace(/\b((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|and|-|\s)+)\b/g, (match) => {
     const words = match.trim().split(/[\s-]+/).filter((w) => w && w !== "and")
@@ -196,6 +196,7 @@ export default function init(root, { motion }) {
         rec = null
         stop()
         if (finalText && log(finalText)) input.value = ""
+        else if (!finalText && !hint.classList.contains("is-error")) hint.textContent = "Didn't catch that. Try again, or type it."
       }
       try {
         rec.start()

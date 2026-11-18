@@ -80,7 +80,7 @@ export default function init(root, { motion }) {
     const v = view(elapsed)
     digits.textContent = v.clock
     digits.classList.toggle("is-lead", !!v.lead)
-    phase.textContent = finished && mode === "fortime" && !v.done ? `Done in ${fmt(elapsed - LEAD_IN)}` : v.phase
+    phase.textContent = v.phase
     roundEl.textContent = roundText(v)
     startBtn.textContent = running ? "Pause" : elapsed > 0 && !finished ? "Resume" : finished ? "Again" : "Start"
     startBtn.setAttribute("aria-label", `${startBtn.textContent} the ${modeName()} timer`)
@@ -91,7 +91,7 @@ export default function init(root, { motion }) {
     root.classList.toggle("is-running", running)
     root.dataset.mode = mode
     modes.forEach((m) => (m.disabled = running))
-    root.querySelectorAll(".lx-step").forEach((b) => (b.disabled = running || (elapsed > 0 && !finished)))
+    root.querySelectorAll(".lx-step").forEach((b) => (b.disabled = running || elapsed > 0))
   }
 
   const modeName = () => ({ amrap: "AMRAP", emom: "EMOM", fortime: "For time" })[mode]
@@ -133,6 +133,7 @@ export default function init(root, { motion }) {
     }
     if (audio && audio.state === "suspended") audio.resume()
     if (finished) reset(true)
+    else if (elapsed === 0) lastSecond = null
     running = true
     started = performance.now() - elapsed * 1000
     lastSecond = Math.floor(elapsed) - (elapsed === 0 ? 1 : 0)

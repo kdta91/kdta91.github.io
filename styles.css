@@ -1196,7 +1196,7 @@ html:not(.js) .now {
 }
 
 .palette {
-  --bg: #f3f3ef;
+  --bg: #e7e7e3;
   --ink: #121316;
   --muted: #4f5257;
   --line: rgba(18, 19, 22, 0.16);
@@ -1866,7 +1866,7 @@ button.dc-key::after {
 .lx-modes span {
   display: inline-grid;
   place-items: center;
-  min-height: 2.5rem;
+  min-height: 44px;
   padding: 0 clamp(0.75rem, 2.5vw, 1.125rem);
   border-radius: 999px;
   font-size: 0.9375rem;
@@ -1940,10 +1940,6 @@ button.dc-key::after {
 
 .lx-digits.is-lead {
   color: var(--ink);
-}
-
-.is-running .lx-digits:not(.is-lead) {
-  text-shadow: 0 0 40px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .lx-controls {
@@ -2301,6 +2297,19 @@ button.dc-key::after {
 
 .tt-term p {
   overflow-wrap: anywhere;
+}
+
+.tt-tab {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tt-tab:hover {
+  color: var(--tt-ink);
 }
 
 .tt-banner,

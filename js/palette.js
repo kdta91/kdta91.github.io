@@ -73,13 +73,12 @@ export default function init({ motion, loadDemo }) {
     else announce("Copy this link: " + url)
   }
 
+  // Substring in the label first, then any word of the group, hint or keywords starting with the query.
   const score = (text, q) => {
     if (!q) return 1
     text = text.toLowerCase()
     if (text.includes(q)) return 100 - text.indexOf(q)
-    let i = 0
-    for (const ch of text) if (ch === q[i]) i++
-    return i === q.length ? 10 : 0
+    return text.split(/[\s#/.:@-]+/).some((w) => w.startsWith(q)) ? 20 : 0
   }
 
   function render() {
@@ -102,7 +101,8 @@ export default function init({ motion, loadDemo }) {
           })
           .join("")
       : `<li class="palette-empty" role="presentation">No command matches “${input.value.replace(/[<&]/g, "")}”</li>`
-    input.setAttribute("aria-activedescendant", shown.length ? `pc-${active}` : "")
+    if (shown.length) input.setAttribute("aria-activedescendant", `pc-${active}`)
+    else input.removeAttribute("aria-activedescendant")
     status.textContent = `${shown.length} command${shown.length === 1 ? "" : "s"}`
     const el = list.querySelector('[aria-selected="true"]')
     if (el) el.scrollIntoView({ block: "nearest" })
@@ -120,8 +120,9 @@ export default function init({ motion, loadDemo }) {
     render()
   })
   input.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowDown" || (e.ctrlKey && e.key === "n")) active = (active + 1) % Math.max(shown.length, 1)
-    else if (e.key === "ArrowUp" || (e.ctrlKey && e.key === "p")) active = (active - 1 + shown.length) % Math.max(shown.length, 1)
+    if (e.isComposing) return
+    if (e.key === "ArrowDown") active = (active + 1) % Math.max(shown.length, 1)
+    else if (e.key === "ArrowUp") active = (active - 1 + shown.length) % Math.max(shown.length, 1)
     else if (e.key === "Home") active = 0
     else if (e.key === "End") active = shown.length - 1
     else if (e.key === "Enter") return e.preventDefault(), run(active)

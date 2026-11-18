@@ -33,7 +33,7 @@ Prospective freelance or contract clients (founders, product leads, agencies) de
 
 ## Interactive demos (on the site)
 
-Each band has a playground that runs entirely in the browser: no uploads, no trackers, no third-party scripts. They are demos of a flow, not the product: DropCove's notch converts images with canvas; Linaw's logging flow uses a small client-side phrase parser (browser speech recognition where available, typing everywhere); tortui's terminal replays `tortui --demo` with the repo's synthetic fixtures; Liftrix's timer is a working AMRAP / EMOM / For time clock. The "Now" strip is the `NOW` array at the top of script.js.
+Each band has a playground that runs in the browser: no uploads by the site, no trackers, no third-party scripts. The one exception is Linaw's optional mic, which uses the browser's own speech recognition (Chrome sends that audio to its maker); the page says so beside it, and typing never leaves the page. They are demos of a flow, not the product: DropCove's notch converts images with canvas; Linaw's logging flow uses a small client-side phrase parser (browser speech recognition where available, typing everywhere); tortui's terminal replays `tortui --demo` with the repo's synthetic fixtures; Liftrix's timer is a working AMRAP / EMOM / For time clock. The "Now" strip is the `NOW` array at the top of script.js.
 
 ## Constraints
 
