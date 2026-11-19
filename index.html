@@ -12,6 +12,7 @@
     <meta property="og:description" content="I design, build and ship products end to end." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#E7E7E3" />
+    <link rel="icon" href="data:," />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,6 +22,10 @@
     <link rel="stylesheet" href="styles.css" />
     <script>
       document.documentElement.classList.add("js")
+      try {
+        var m = localStorage.getItem("motion")
+        document.documentElement.dataset.motion = (m ? m === "reduce" : matchMedia("(prefers-reduced-motion: reduce)").matches) ? "reduce" : "full"
+      } catch (e) {}
     </script>
   </head>
   <body>
@@ -34,12 +39,20 @@
         <a href="#work">Work</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#contact">Contact</a>
+        <button type="button" class="palette-trigger" data-palette-open aria-label="Open the command palette" aria-keyshortcuts="Meta+K Control+K">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5 9 12l-5 5.5M12 18h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <kbd class="kbd-mod">⌘</kbd><kbd>K</kbd>
+        </button>
       </nav>
     </header>
 
     <main id="top">
       <!-- Hero -->
       <section class="hero" data-theme="frame">
+        <aside class="now" aria-labelledby="now-title">
+          <h2 class="now-title" id="now-title"><span class="now-dot" aria-hidden="true"></span>Now</h2>
+          <ul id="now-list" class="now-list"></ul>
+        </aside>
         <div class="hero-copy">
           <h1 class="display">I build products end&nbsp;to&nbsp;end, and ship&nbsp;them.</h1>
           <p class="lede">
@@ -53,6 +66,7 @@
               Start a conversation on GitHub
             </a>
             <p class="availability">Open to freelance and contract work</p>
+            <p class="hero-play">Every project below is playable. <button type="button" class="text-button" data-palette-open>Open the command palette <kbd class="kbd-mod">⌘</kbd><kbd>K</kbd></button></p>
           </div>
         </div>
 
@@ -80,11 +94,21 @@
       <!-- Work -->
       <div id="work" class="work">
         <!-- DropCove -->
-        <section class="project" id="dropcove" data-theme="dropcove" aria-labelledby="dropcove-name">
+        <section class="project project-notched" id="dropcove" data-theme="dropcove" aria-labelledby="dropcove-name">
+          <div class="dc-stage" data-demo="dropcove">
+            <div class="dc-notch" data-state="idle">
+              <button type="button" class="dc-lip" id="dc-notch" aria-expanded="false" aria-controls="dc-panel" aria-label="DropCove notch: drop an image on it, or press to choose one. Converts in this browser.">
+                <span class="dc-cam" aria-hidden="true"></span>
+              </button>
+              <div class="dc-panel" id="dc-panel" role="region" aria-label="DropCove actions" hidden></div>
+            </div>
+            <p class="dc-hint"><span class="dc-hint-drag">Drag an image onto the notch, or click it.</span><span class="dc-hint-tap">Tap the notch to pick a photo or try a sample.</span> It converts right here; nothing is uploaded.</p>
+            <p class="sr-only dc-live" aria-live="polite"></p>
+          </div>
           <div class="project-summary">
             <img src="images/projects/dropcove-icon.png" alt="" class="app-icon" width="72" height="72" />
             <h2 class="project-name" id="dropcove-name">DropCove</h2>
-            <p class="meta">macOS · free download · Pro one-time · v1.1</p>
+            <p class="meta">macOS · free download · Pro one-time · v1.2.2</p>
             <p class="project-line">
               Drop a file on your MacBook's notch to convert, compress, OCR or
               merge it. Copy a token, a color or some JSON and it tells you what it is.
@@ -103,6 +127,10 @@
             </figure>
 
             <dl class="notes">
+              <div>
+                <dt>New in 1.2</dt>
+                <dd>A file shelf with AirDrop, now playing, battery levels and a Join button for your next meeting, all in the notch.</dd>
+              </div>
               <div>
                 <dt>The notch is the drop target</dt>
                 <dd>Drag a file to the top of the screen and the notch opens with the actions that fit, ranked by what you use. For an image, the top action is already done before you click.</dd>
@@ -125,7 +153,7 @@
         </section>
 
         <!-- Liftrix -->
-        <section class="project" data-theme="liftrix" aria-labelledby="liftrix-name">
+        <section class="project" id="liftrix" data-theme="liftrix" aria-labelledby="liftrix-name">
           <div class="project-summary">
             <img src="images/projects/liftrix-icon.png" alt="" class="app-icon" width="72" height="72" />
             <h2 class="project-name" id="liftrix-name">Liftrix</h2>
@@ -147,6 +175,33 @@
                 <source src="media/liftrix.mp4" type="video/mp4" />
               </video>
             </figure>
+
+            <div class="play lx" data-demo="liftrix">
+              <h3 class="play-title">Run a workout clock</h3>
+              <p class="play-sub">The timer at the heart of Liftrix, for whatever you train: lifting, conditioning, intervals.</p>
+              <div class="lx-modes" role="radiogroup" aria-label="Timer type">
+                <label><input type="radio" name="lx-mode" value="amrap" checked /><span>AMRAP</span></label>
+                <label><input type="radio" name="lx-mode" value="emom" /><span>EMOM</span></label>
+                <label><input type="radio" name="lx-mode" value="fortime" /><span>For time</span></label>
+              </div>
+              <div class="lx-face" tabindex="0" role="group" aria-label="Workout clock. Space starts or pauses.">
+                <p class="lx-phase">As many rounds as possible</p>
+                <p class="lx-digits" role="timer" aria-live="off">10:00</p>
+                <p class="lx-round">0 rounds</p>
+              </div>
+              <div class="lx-controls">
+                <div class="lx-stepper" role="group" aria-label="Length">
+                  <button type="button" class="lx-step" data-step="-1" aria-label="One less">−</button>
+                  <p><output class="lx-minutes">10</output> <span class="lx-minutes-label">min</span></p>
+                  <button type="button" class="lx-step" data-step="1" aria-label="One more">+</button>
+                </div>
+                <button type="button" class="button" id="lx-start">Start</button>
+                <button type="button" class="button ghost lx-add-round" disabled>+1 round</button>
+                <button type="button" class="button ghost lx-reset">Reset</button>
+                <button type="button" class="lx-sound" aria-pressed="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Sound on</span></button>
+              </div>
+              <p class="sr-only lx-live" aria-live="polite"></p>
+            </div>
 
             <dl class="notes">
               <div>
@@ -171,7 +226,7 @@
         </section>
 
         <!-- Linaw -->
-        <section class="project" data-theme="linaw" aria-labelledby="linaw-name">
+        <section class="project" id="linaw" data-theme="linaw" aria-labelledby="linaw-name">
           <div class="project-summary">
             <img src="images/projects/linaw-icon.png" alt="" class="app-icon" width="72" height="72" />
             <h2 class="project-name" id="linaw-name">Linaw</h2>
@@ -189,6 +244,31 @@
                 <source src="media/linaw.mp4" type="video/mp4" />
               </video>
             </figure>
+
+            <div class="play ln" data-demo="linaw">
+              <h3 class="play-title">Say “5.75 for coffee”</h3>
+              <p class="play-sub">A demo of the logging flow: say or type a spend and it becomes a row. The phrase is read by a few lines of script on this page; nothing is saved.</p>
+              <div class="ln-card">
+                <div class="ln-total"><span class="ln-count">Nothing logged yet</span><span class="ln-total-label">Total</span><strong class="ln-total-value">0.00</strong></div>
+                <ul class="ln-list" aria-label="Logged entries"></ul>
+                <form class="ln-form" autocomplete="off">
+                  <button type="button" class="ln-mic" aria-pressed="false" aria-label="Speak an expense" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+                  <label class="sr-only" for="ln-input">What did you spend?</label>
+                  <input id="ln-input" name="say" type="text" enterkeyhint="done" placeholder="5.75 for coffee" />
+                  <button type="submit" class="ln-log">Log</button>
+                </form>
+                <p class="ln-hint" aria-hidden="true"></p>
+              </div>
+              <div class="ln-chips" role="group" aria-label="Examples">
+                <button type="button" data-say="5.75 for coffee">5.75 for coffee</button>
+                <button type="button" data-say="spent 12 on lunch">spent 12 on lunch</button>
+                <button type="button" data-say="groceries 64.30">groceries 64.30</button>
+                <button type="button" data-say="taxi home 18">taxi home 18</button>
+                <button type="button" class="ln-clear" hidden>Clear</button>
+              </div>
+              <p class="play-note">Voice uses your browser's own speech recognition where it has one, which may process audio on the browser maker's servers. Typing never leaves the page.</p>
+              <p class="sr-only ln-live" aria-live="polite"></p>
+            </div>
 
             <dl class="notes">
               <div>
@@ -213,7 +293,7 @@
         </section>
 
         <!-- Tortui -->
-        <section class="project project-wide" data-theme="tortui" aria-labelledby="tortui-name">
+        <section class="project project-wide" id="tortui" data-theme="tortui" aria-labelledby="tortui-name">
           <div class="project-summary">
             <h2 class="project-name mono-name" id="tortui-name">tortui</h2>
             <p class="meta">macOS · Linux · Windows · open source (MIT) · v1.1</p>
@@ -236,6 +316,33 @@
               </video>
               <figcaption>Recorded with <code>tortui --demo</code>: synthetic data, no network.</figcaption>
             </figure>
+
+            <div class="play tt" data-demo="tortui">
+              <h3 class="play-title">Drive <code>tortui --demo</code> from here</h3>
+              <p class="play-sub">A keyboard replica of the demo mode, running on this page with the same synthetic data. Click inside, then use the keys.</p>
+              <div class="terminal tt-window">
+                <div class="terminal-bar" aria-hidden="true"><i></i><i></i><i></i><span>tortui --demo</span></div>
+                <div class="tt-term" id="tt-term" tabindex="0" role="application" aria-roledescription="terminal demo" aria-label="tortui demo, synthetic data. Slash to search, arrow keys or j and k to move, Enter to open, a to add, q or Escape to go back, 1 to 4 for tabs.">
+                  <p class="tt-banner">DEMO MODE: synthetic data, zero network, nothing written</p>
+                  <p class="tt-tabs"></p>
+                  <form class="tt-search" autocomplete="off">
+                    <label for="tt-query" class="tt-cyan">/ search</label>
+                    <input id="tt-query" type="text" spellcheck="false" enterkeyhint="search" placeholder="archive" />
+                  </form>
+                  <div class="tt-screen"></div>
+                  <p class="tt-status"></p>
+                </div>
+                <div class="tt-keys" role="group" aria-label="Terminal keys" id="tt-keys-help">
+                  <button type="button" data-key="search" aria-label="Search (slash)">/</button>
+                  <button type="button" data-key="up" aria-label="Up (k)">↑</button>
+                  <button type="button" data-key="down" aria-label="Down (j)">↓</button>
+                  <button type="button" data-key="open" aria-label="Enter, open">⏎ open</button>
+                  <button type="button" data-key="add" aria-label="a, add to downloads">a add</button>
+                  <button type="button" data-key="back" aria-label="q, back">q back</button>
+                </div>
+              </div>
+              <p class="sr-only tt-live" aria-live="polite"></p>
+            </div>
 
             <dl class="notes notes-row">
               <div>
@@ -335,9 +442,11 @@
       </section>
     </main>
 
+    <p class="sr-only" id="page-status" aria-live="polite"></p>
+
     <footer class="footer" data-theme="frame">
       <p>© 2026 Kristoff Ampong</p>
-      <p>Hand-written HTML and CSS. Motion rendered with HyperFrames.</p>
+      <p>Hand-written HTML, CSS and JS; the demos run in your browser (voice input uses your browser&#39;s own speech service). Motion rendered with HyperFrames. <a href="links/">Links</a></p>
     </footer>
 
     <script src="script.js"></script>
