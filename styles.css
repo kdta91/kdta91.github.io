@@ -1447,6 +1447,10 @@ html:not(.js) .now {
   animation: dc-in 380ms var(--ease-out) both;
 }
 
+.dc-panel[hidden] {
+  display: none;
+}
+
 @keyframes dc-in {
   from {
     opacity: 0;
